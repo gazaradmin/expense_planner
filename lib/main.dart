@@ -1,9 +1,11 @@
-import 'package:expense_planner/widgets/transaction_list.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import './widgets/chart.dart';
 import './widgets/new_transaction.dart';
 import './models/transaction.dart';
+import './widgets/transaction_list.dart';
 
 void main() {
   runApp(const MyApp());
@@ -165,7 +167,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text("Show Chart"),
-                  Switch(
+                  Switch.adaptive(
+                      activeColor: Theme.of(context).primaryColor,
                       value: _showChart,
                       onChanged: (val) {
                         setState(() {
@@ -196,11 +199,13 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _startNewTransaction(context),
-        backgroundColor: Theme.of(context).primaryColor.withOpacity(0.6),
-        child: const Icon(Icons.add),
-      ),
+      floatingActionButton: Platform.isIOS
+          ? Container()
+          : FloatingActionButton(
+              onPressed: () => _startNewTransaction(context),
+              backgroundColor: Theme.of(context).primaryColor.withOpacity(0.6),
+              child: const Icon(Icons.add),
+            ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
